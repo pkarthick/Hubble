@@ -1,2 +1,2 @@
 # Hubble
-Cross Platform Web UI for File Management
+Cross Platform Web UI for File Management using Svelte and Rust
