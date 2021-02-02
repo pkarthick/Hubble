@@ -17,6 +17,7 @@ log = "0.4"
 env_logger = "0.8.1"
 pretty_env_logger = "0.4"
 fs_utilities = { path="../fs_utilities" }
+process_folder = { path="../process_folder" }
 
 [dev-dependencies]
 pretty_env_logger = "0.4"

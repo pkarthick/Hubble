@@ -1,9 +1,11 @@
 extern crate chrono;
+extern crate process_folder;
+
 use chrono::offset::Local;
 use chrono::DateTime;
 
 use serde::{Deserialize, Serialize};
-use std::fs::{self, Metadata};
+use std::{fs::{self, Metadata}, thread};
 use std::path::Path;
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -36,28 +38,38 @@ impl FileInfo {
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Folder {
+    name: String,
+    size: Option<i64>,
     pub path: String,
     pub folders: Vec<Folder>,
     pub files: Vec<FileInfo>,
 }
 
-// pub async fn folder(request: web::Json<Request>) -> web::Json<Folder> {
-//     println!("=========={:?}=========", request);
-//     web::Json(get_folder_contents(request.0))
-// }
+pub async fn get_folder_size(request: Request) -> i64 {
+    let path = request.path.clone();
+    process_folder::process::get_dir_size(path).await
+}
 
-pub fn get_folder_contents(request: Request) -> Folder {
-    let path = request.path;
+pub async fn get_folder_contents(request: Request) -> Folder {
+    let path = request.path.clone();
+
+    let handle = thread::spawn(|| async { process_folder::process::cleanup_old_files(path).await });
+
     let mut files: Vec<FileInfo> = vec![];
     let mut folders: Vec<Folder> = vec![];
 
-    if let Ok(entries) = fs::read_dir(&path) {
+    if let Ok(entries) = fs::read_dir(&request.path) {
         for entry in entries {
             if let Ok(entry) = entry {
                 if let Ok(metadata) = entry.metadata() {
                     if metadata.file_type().is_dir() {
+                        let path = Path::file_name(&entry.path()).unwrap().to_string_lossy().to_string();
+                        let dir_path = String::from(entry.path().to_str().unwrap());
+                        // let dir_size = process::get_dir_size(dir_path.clone()).await;
                         folders.push(Folder {
-                            path: String::from(entry.path().to_str().unwrap()),
+                            name: path,
+                            size: None,
+                            path: dir_path,
                             folders: vec![],
                             files: vec![],
                         });
@@ -71,18 +83,20 @@ pub fn get_folder_contents(request: Request) -> Folder {
         }
     }
 
+    let _ = handle.join().unwrap();
+
+    let path = request.path;
+    let mut name = "".into();
+
+    if let Some(n ) = Path::new(&path).file_name() {
+        name =  n.to_string_lossy().to_string()
+    }
+
     Folder {
+        name,
+        size: None,
         path,
         folders,
         files,
-    }
-}
-
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
     }
 }

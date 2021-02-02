@@ -8,21 +8,14 @@
   export let items: TabItem<any>[] = [
     {
       id: 0,
-      path: "c:\\",
+      path: "/mnt/c",
       icon: "folder_open",
       component: Folder,
       props: {}
     },
     {
       id: 1,
-      path: "d:\\",
-      icon: "folder_open",
-      component: Folder,
-      props: {}
-    },
-    {
-      id: 2,
-      path: "e:\\",
+      path: "/mnt/d",
       icon: "folder_open",
       component: Folder,
       props: {}
@@ -32,7 +25,14 @@
   export let tabitems: TabItem<any>[] = [
     {
       id: 0,
-      path: "c:\\users\\pkart",
+      path: "/mnt/d/Mirror/Fun",
+      icon: "folder_open",
+      component: Folder,
+      props: {}
+    },
+    {
+      id: 0,
+      path: "/mnt/d/Mirror/Explore",
       icon: "folder_open",
       component: Folder,
       props: {}

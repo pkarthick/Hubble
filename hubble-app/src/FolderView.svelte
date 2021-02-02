@@ -6,7 +6,7 @@
   const dispatch = createEventDispatcher();
   export let path;
   export let showfiles = false;
-  export let foldername = path.substr(path.lastIndexOf("\\") + 1);
+  export let foldername = path.substr(path.lastIndexOf("/") + 1);
 </script>
 
 <div class="m-1 flex border border-solid border-primary-200">

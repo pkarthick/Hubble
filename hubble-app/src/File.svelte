@@ -4,7 +4,7 @@
   export let path = "... loading";
   export let size;
   export let modified_date;
-  $: name = path.slice(path.lastIndexOf("\\") + 1);
+  $: name = path.slice(path.lastIndexOf("/") + 1);
   $: type = name.slice(path.lastIndexOf(".") + 1);
 
   let units = "B";

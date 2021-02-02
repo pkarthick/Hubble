@@ -41,9 +41,8 @@
   }
 
   onMount(async function() {
-    let lastInd = path.lastIndexOf("\\");
-    let ind = path.indexOf("\\");
-
+    let lastInd = path.lastIndexOf("/");
+    
     if (path.length - 1 !== lastInd) {
       name = path.slice(lastInd + 1);
     } else {

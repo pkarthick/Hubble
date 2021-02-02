@@ -55,7 +55,7 @@ async fn main() {
     pretty_env_logger::init(); // Match any request and return hello world!
     let cors = warp::cors()
         .allow_any_origin()
-        //.allow_origin("http://localhost:5555")
+        // .allow_origin("http://localhost:5555")
         .allow_methods(vec!["GET", "POST", "OPTIONS"])
         .allow_headers(vec![
             http::header::AUTHORIZATION,

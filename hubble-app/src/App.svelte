@@ -1,11 +1,8 @@
 <script lang="typescript">
-  import { initials } from "./initials";
 
   import MainPanel from "./MainPanel.svelte";
   import HeaderPanel from "./HeaderPanel.svelte";
   import "./app.css";
-
-  const test = () => initials(name);
 
   let visible = true;
 
